@@ -249,6 +249,45 @@ div.classList; // ["info", "data", "dark"]
 div.classList.replace("dark", "light");       // Devuelve `true` (se hizo el cambio)
 div.classList.replace("warning", "error");    // Devuelve `false` (no existe la clase warning)
 ```
+* Agregar estilos en un elemento
+
+    - Estilos en línea
+    ```
+    const note = document.querySelector('.note');
+    note.style.backgroundColor = 'yellow';
+    note.style.color = 'red';
+    ```
+    - Usando la propiedad cssText
+     ```
+    note.style.cssText += 'color:red;background-color:yellow';
+    note.style.cssText = 'color:red;background-color:yellow';
+    ```
+    - Usar una función de ayuda
+    ```
+    function css(element, style) {
+        for (const property in style)
+            element.style[property] = style[property];
+    }
+    ```
+
+    ```
+    const note = document.querySelector('.note');
+    css(note, {
+        'background-color': 'yellow',
+        color: 'red'
+    });
+    ```
+    - Estilos globales
+    ```
+   const style = document.createElement('style');
+    style.innerHTML = `
+      .note {
+        background-color: yellow;
+        color:red;
+      }
+    `;
+    document.head.appendChild(style);
+    ```
 
 ## Construido con 🛠️
 
