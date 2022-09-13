@@ -1,3 +1,5 @@
+
+
 let grupoDeTrabajos = [
     {
         id: 1,
@@ -98,17 +100,54 @@ let grupoDeTrabajos = [
     }
 ]
 
-function iniciarSesion(){
+function validarComentario(comentario) {
+
+    if (comentario.length == 0) {
+        alert('El comentario está vacío');
+        return false;
+    }else {
+        return true;
+    }
+
+}
+
+function agregarComentario(indiceGrupo, indiceUsuario, indiceTarea) {
+
+    let userId = Number(localStorage.getItem('userId'));
+    let inputId = indiceGrupo + '_' + indiceUsuario + '_' + indiceTarea;
+    const comentario = document.getElementById(inputId).value;
+
+    if (validarComentario(comentario)) {
+        let tarea = grupoDeTrabajos[indiceGrupo].usuarios[indiceUsuario].tareas[indiceTarea];
+        let comentarios = tarea.comentarios;
+        let comentarioId = comentarios.length + 1;
+        comentarios.push({
+            id: comentarioId,
+            userId: userId,
+            nombre: comentario
+        })
+
+        listarTareasYcomentarios();
+       
+    }
+}
+
+function iniciarSesion() {
     localStorage.setItem('grupoId', 1);
     localStorage.setItem('userId', 2);
 }
 
 function listarTareasYcomentarios() {
     const divTareas = document.getElementById('tareas');
+    let content = document.getElementById("content");
+    divTareas.removeChild(content);
+    content = document.createElement('div');
+    content.id = "content";
     grupoDeTrabajos.forEach(grupoDeTrabajo => {
         let grupoId = grupoDeTrabajo.id;
 
         grupoDeTrabajo.usuarios.forEach(usuario => {
+
             usuario.tareas.forEach(tarea => {
                 const button = document.createElement('button');
                 button.setAttribute('class', 'collapsible');
@@ -118,23 +157,30 @@ function listarTareasYcomentarios() {
                 const comentarios = document.createElement('div');
                 comentarios.setAttribute('class', 'comentarios');
 
-                divTareas.appendChild(button);
-                divTareas.appendChild(comentarios);
+                content.appendChild(button);
+                content.appendChild(comentarios);
+                divTareas.appendChild(content);
 
                 grupoIdDeUsuario = Number(localStorage.getItem('grupoId'));
-                if (grupoId == grupoIdDeUsuario) {
+                if ((grupoId == grupoIdDeUsuario) && (tarea.puedeComentar)) {
+
+                    let indiceGrupo = grupoDeTrabajo.id - 1;
+                    let indiceUsuario = usuario.id - 1;
+                    let indiceTarea = tarea.id - 1;
 
                     const input = document.createElement('input');
-                    input.id = 'comentario_tarea_id_' + tarea.id;
+                    input.id = indiceGrupo + '_' + indiceUsuario + '_' + indiceTarea;
+
 
                     const buttonAgregarComentario = document.createElement('button');
+                    buttonAgregarComentario.setAttribute("onclick", 'agregarComentario(' + indiceGrupo + ',' + indiceUsuario + ',' + indiceTarea + ')');
                     buttonAgregarComentario.innerHTML = "Agregar";
 
                     const formulario = document.createElement('div');
                     formulario.setAttribute('class', 'formulario');
                     formulario.appendChild(input);
                     formulario.appendChild(buttonAgregarComentario);
-                    divTareas.appendChild(formulario);
+                    content.appendChild(formulario);
                 }
 
                 tarea.comentarios.forEach(comentario => {
@@ -142,10 +188,6 @@ function listarTareasYcomentarios() {
                     p.innerHTML = comentario.nombre;
                     comentarios.appendChild(p);
                 })
-
-
-
-
             })
         })
     });
