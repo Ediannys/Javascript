@@ -26,3 +26,11 @@
     
     background-color: aqua;
   }
+
+  .hide {
+    visibility:hidden
+  }
+
+  .show {
+    visibility:visible
+  }
