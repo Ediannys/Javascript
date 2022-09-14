@@ -12,12 +12,22 @@
 <body>
 
     <div class="buscador">
-        <label for="buscar">Buscar Treas</label>
-        <input type="search" id="buscador">
+
+        <input type="search" id="buscador" placeholder="Buscar tareas">
     </div>
 
     <div id="tareas">
         <div id="content"></div>
+    </div>
+
+    <div>
+        <input id="agregar-tarea" placeholder="Agrega una tarea"><br>
+        <button onclick="agregarTarea()"> Agregar</button>
+        <input id="puede-eliminar" type="checkbox" name="permiso" value="false">Los usuarios del mismo grupo pueden
+        Eliminar la Tarea<br>
+        <input id="puede-comentar" type="checkbox" name="permiso" value="false">Los usuarios del mismo grupo pueden
+        Comentar la Tarea<br>
+
     </div>
     <script src="./js/index.js"></script>
 

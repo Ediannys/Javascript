@@ -1,3 +1,4 @@
+//DATOS
 let grupoDeTrabajos = [{
     id: 1,
     nombre: "grupoDeTrabajoUno",
@@ -86,17 +87,7 @@ let grupoDeTrabajos = [{
 }
 ]
 
-function validarComentario(comentario) {
-
-    if (comentario.length == 0) {
-        alert('El comentario está vacío');
-        return false;
-    } else {
-        return true;
-    }
-
-}
-
+//FUNCIONES
 function agregarComentario(grupoIdDeUsuarioLogueado, usuarioId, tareaId) {
 
     let usuarioLogueado = Number(localStorage.getItem('usuarioLogueado'));
@@ -104,7 +95,7 @@ function agregarComentario(grupoIdDeUsuarioLogueado, usuarioId, tareaId) {
     const comentario = document.getElementById(inputId).value;
     flagComentarioAgregado = false;
 
-    if (validarComentario(comentario)) {
+    if (validarInput(comentario, 'El campo comentario está vacío! Por favor Ingrese uno válido')) {
 
         grupoDeTrabajos.forEach(grupoDeTrabajo => {
             if (grupoDeTrabajo.id == grupoIdDeUsuarioLogueado) {
@@ -133,10 +124,70 @@ function agregarComentario(grupoIdDeUsuarioLogueado, usuarioId, tareaId) {
     }
 }
 
+function agregarTarea() {
+
+    let usuarioLogueado = Number(localStorage.getItem('usuarioLogueado'));
+    const tarea = document.getElementById('agregar-tarea').value;
+    const flagEliminar = document.getElementById('puede-eliminar').checked;
+    const flagComentar = document.getElementById('puede-comentar').checked;
+    let flagTareaAgregada = false;
+
+    if (validarInput(tarea, 'El campo tarea está vacío! Por favor Ingrese uno válido')) {
+
+        grupoDeTrabajos.forEach(grupoDeTrabajo => {
+            if (grupoDeTrabajo.id == grupoIdDeUsuarioLogueado) {
+                grupoDeTrabajo.usuarios.forEach(usuario => {
+                    if (usuario.id == usuarioLogueado) {
+
+
+                        let tareas = usuario.tareas;
+                        let tareaId = tareas.length + 1;
+                        tareas.push({
+                            id: tareaId,
+                            nombre: tarea,
+                            puedeEliminar: flagEliminar,
+                            puedeComentar: flagComentar,
+                            comentarios: []
+                        })
+                        console.log(tareas)
+                        flagTareaAgregada = true;
+                    }
+                })
+            }
+        });
+
+        if (flagTareaAgregada) {
+            listarTareasYcomentarios();
+        }
+    }
+}
 
 function iniciarSesion() {
     localStorage.setItem('grupoIdDeUsuarioLogueado', 1);
     localStorage.setItem('usuarioLogueado', 2);
+}
+
+function inicializarBuscador() {
+    let tareas = obtenerTareas();
+    const buscadorInput = document.getElementById('buscador');
+    buscadorInput.addEventListener('input', e => {
+        const value = e.target.value;
+
+        tareas.forEach(tarea => {
+            let botonTareaId = 'tarea_' + tarea.id;
+
+            let botonTarea = document.getElementById(botonTareaId);
+            let tareaTexto = botonTarea.innerHTML;
+
+            if (tareaTexto.toLocaleLowerCase().includes(value.toLocaleLowerCase())) {
+                botonTarea.style.display = 'block';
+            } else {
+                botonTarea.style.display = 'none';
+                console.log(false)
+            }
+        })
+    });
+
 }
 
 function listarTareasYcomentarios() {
@@ -207,28 +258,15 @@ function obtenerTareas() {
     return tareas;
 }
 
-function inicializarBuscador() {
-    let tareas = obtenerTareas();
-    const buscadorInput = document.getElementById('buscador');
-    buscadorInput.addEventListener('input', e => {
-        const value = e.target.value;
-
-        tareas.forEach(tarea => {
-            let botonTareaId = 'tarea_' + tarea.id;
-
-            let botonTarea = document.getElementById(botonTareaId);
-            let tareaTexto = botonTarea.innerHTML;
-
-            if (tareaTexto.toLocaleLowerCase().includes(value.toLocaleLowerCase())) {
-                botonTarea.style.display = 'block';
-            } else {
-                botonTarea.style.display = 'none';
-                console.log(false)
-            }
-        })
-    });
-
+function validarInput(texto, mensaje) {
+    if (texto.length == 0) {
+        alert(mensaje);
+        return false;
+    } else {
+        return true;
+    }
 }
+
 
 iniciarSesion();
 inicializarBuscador();
