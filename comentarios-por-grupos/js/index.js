@@ -138,8 +138,6 @@ function agregarTarea() {
             if (grupoDeTrabajo.id == grupoIdDeUsuarioLogueado) {
                 grupoDeTrabajo.usuarios.forEach(usuario => {
                     if (usuario.id == usuarioLogueado) {
-
-
                         let tareas = usuario.tareas;
                         let tareaId = tareas.length + 1;
                         tareas.push({
@@ -160,6 +158,59 @@ function agregarTarea() {
             listarTareasYcomentarios();
         }
     }
+}
+
+function encontrarIndiceDeLaTarea(tareas, id) {
+    let contador = 0;
+    tareas.forEach(tarea => {
+        if (tarea.id == id) {
+            if (tarea.puedeEliminar) {
+
+                return contador;
+
+            } else {
+                alert('No tienes los permisos necesarios para eliminar esta tarea');
+                return -1;
+            }
+        }
+        contador += 1;
+    });
+
+}
+
+function eliminarTarea(id) {
+
+    let grupoIdDeUsuarioLogueado = Number(localStorage.getItem('grupoIdDeUsuarioLogueado'));
+    let flagTareaEliminada = false;
+
+    grupoDeTrabajos.forEach(grupoDeTrabajo => {
+        if (grupoDeTrabajo.id == grupoIdDeUsuarioLogueado) {
+
+            let pos = -1;
+            grupoDeTrabajo.usuarios.forEach(usuario => {
+                usuario.tareas.forEach((tarea, indice) => {
+                    if (tarea.id == id) {
+                        pos = indice;
+                        return;
+                    }
+                })
+
+                if (pos != -1) {
+                    usuario.tareas.splice(pos, 1);
+                    flagTareaEliminada = true;
+                }
+
+            })
+
+
+        }
+    });
+
+    if (flagTareaEliminada) {
+        listarTareasYcomentarios();
+    }
+
+
 }
 
 function iniciarSesion() {
@@ -202,21 +253,30 @@ function listarTareasYcomentarios() {
         grupoDeTrabajo.usuarios.forEach(usuario => {
 
             usuario.tareas.forEach(tarea => {
-                const button = document.createElement('button');
-                button.setAttribute('class', 'collapsible');
-                button.id = 'tarea_' + tarea.id;
-                button.style.backgroundColor = grupoDeTrabajo.color;
-                button.innerHTML = tarea.nombre;
+                const divNombreDeTarea = document.createElement('div');
+                divNombreDeTarea.setAttribute('class', 'collapsible');
+                divNombreDeTarea.id = 'tarea_' + tarea.id;
+                divNombreDeTarea.style.backgroundColor = grupoDeTrabajo.color;
+                divNombreDeTarea.innerHTML = tarea.nombre;
+
+
+
 
                 const comentarios = document.createElement('div');
                 comentarios.setAttribute('class', 'comentarios');
 
-                content.appendChild(button);
+                content.appendChild(divNombreDeTarea);
                 content.appendChild(comentarios);
                 divTareas.appendChild(content);
 
                 grupoIdDeUsuarioLogueado = Number(localStorage.getItem('grupoIdDeUsuarioLogueado'));
                 if ((grupoId == grupoIdDeUsuarioLogueado) && (tarea.puedeComentar)) {
+
+                    const buttonEliminarTarea = document.createElement('button');
+                    buttonEliminarTarea.setAttribute("onclick", 'eliminarTarea(' + tarea.id + ')');
+                    buttonEliminarTarea.innerHTML = "Eliminar";
+
+                    divNombreDeTarea.appendChild(buttonEliminarTarea);
 
 
                     let usuarioId = usuario.id;
@@ -234,6 +294,7 @@ function listarTareasYcomentarios() {
                     formulario.appendChild(buttonAgregarComentario);
                     content.appendChild(formulario);
                 }
+
 
                 tarea.comentarios.forEach(comentario => {
                     const p = document.createElement('p');
