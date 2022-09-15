@@ -1,4 +1,4 @@
-.collapsible {
+.plegable {
     color: white;
     cursor: pointer;
     padding: 18px;
@@ -10,14 +10,14 @@
     cursor: pointer;
   }
   
-  .active, .collapsible:hover {
+  .active, .plegable:hover {
     background-color: #555;
   }
   
   .comentarios {
     padding: 0 18px;
-  
-    
+    display: none;
+    overflow: hidden;
     background-color: #f1f1f1;
   }
 
