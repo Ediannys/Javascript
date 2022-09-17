@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/main.css">
     <title>Document</title>
 </head>
 
@@ -20,13 +20,22 @@
         <div id="content"></div>
     </div>
 
-    <div>
+    <div class="section-agregar-tarea">
         <input id="agregar-tarea" placeholder="Agrega una tarea"><br>
         <button onclick="agregarTarea()"> Agregar</button>
-        <input id="puede-eliminar" type="checkbox" name="permiso" value="false">Los usuarios del mismo grupo pueden
-        Eliminar la Tarea<br>
-        <input id="puede-comentar" type="checkbox" name="permiso" value="false">Los usuarios del mismo grupo pueden
-        Comentar la Tarea<br>
+
+        <label class="label-checkbox">
+            <p>Los usuarios del mismo grupo pueden comentar la Tarea</p>
+            <input id="puede-eliminar" type="checkbox" name="permiso" value="false">
+
+            <span class="checkmark"></span>
+        </label>
+        <label class="label-checkbox">
+            <p>Los usuarios del mismo grupo pueden eliminar la Tarea</p>
+            <input id="puede-comentar" type="checkbox" name="permiso" value="false">
+            <span class="checkmark"></span>
+        </label>
+
 
     </div>
     <script src="./js/index.js"></script>

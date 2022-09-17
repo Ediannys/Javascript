@@ -234,12 +234,13 @@ function listarTareasYcomentarios() {
             usuario.tareas.forEach(tarea => {
                 const componenteTarea = document.createElement('div');
                 componenteTarea.id = 'tarea-' + tarea.id;
+                componenteTarea.style.backgroundColor = grupoDeTrabajo.color;
 
                 const encabezadoTarea = document.createElement('div');
                 encabezadoTarea.setAttribute('class', 'plegable');
-                const divNombreDeTarea = document.createElement('div');
+                const divNombreDeTarea = document.createElement('p');
                
-                divNombreDeTarea.style.backgroundColor = grupoDeTrabajo.color;
+               
                 divNombreDeTarea.innerHTML = tarea.nombre;
                 encabezadoTarea.appendChild(divNombreDeTarea);
 
@@ -259,9 +260,11 @@ function listarTareasYcomentarios() {
                 grupoIdDeUsuarioLogueado = Number(localStorage.getItem('grupoIdDeUsuarioLogueado'));
                 if ((grupoId == grupoIdDeUsuarioLogueado) && (tarea.puedeComentar)) {
 
-                    const buttonEliminarTarea = document.createElement('button');
+                    const buttonEliminarTarea = document.createElement('a');
+                    const imagenEliminarTarea = document.createElement('img');
+                    imagenEliminarTarea.src = "./images/remove-icon.png";
                     buttonEliminarTarea.setAttribute("onclick", 'eliminarTarea(' + tarea.id + ')');
-                    buttonEliminarTarea.innerHTML = "Eliminar";
+                    buttonEliminarTarea.appendChild(imagenEliminarTarea);
 
                     encabezadoTarea.appendChild(buttonEliminarTarea);
 
@@ -269,6 +272,7 @@ function listarTareasYcomentarios() {
                     let usuarioId = usuario.id;
                     let tareaId = tarea.id;
                     const input = document.createElement('input');
+                    input.placeholder = "Agregar comentario";
                     input.id = grupoIdDeUsuarioLogueado + '-' + usuarioId + '-' + tareaId;
 
                     const buttonAgregarComentario = document.createElement('button');
@@ -276,7 +280,9 @@ function listarTareasYcomentarios() {
                     buttonAgregarComentario.innerHTML = "Agregar";
 
                     const formulario = document.createElement('div');
-                    formulario.setAttribute('class', 'formulario');
+                    formulario.style.backgroundColor = grupoDeTrabajo.color;
+                    formulario.style.opacity = "0.6";
+                    formulario.setAttribute('class', 'section-agregar-comentario');
                     formulario.appendChild(input);
                     formulario.appendChild(buttonAgregarComentario);
                     comentarios.appendChild(formulario);
