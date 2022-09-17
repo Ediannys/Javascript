@@ -93,7 +93,6 @@ function agregarComentario(grupoIdDeUsuarioLogueado, usuarioId, tareaId) {
     let usuarioLogueado = Number(localStorage.getItem('usuarioLogueado'));
     let inputId = grupoIdDeUsuarioLogueado + '-' + usuarioId + '-' + tareaId;
     const comentario = document.getElementById(inputId).value;
-    flagComentarioAgregado = false;
 
     if (validarInput(comentario, 'El campo comentario está vacío! Por favor Ingrese uno válido')) {
 
@@ -101,11 +100,17 @@ function agregarComentario(grupoIdDeUsuarioLogueado, usuarioId, tareaId) {
             if (grupoDeTrabajo.id == grupoIdDeUsuarioLogueado) {
                 grupoDeTrabajo.usuarios.forEach(usuario => {
                     if (usuario.id == usuarioId) {
+                        console.log(usuario.id)
                         usuario.tareas.forEach(tarea => {
                             if (tarea.id == tareaId) {
+                                console.log(tarea.id)
                                 listaDeComentarios = document.getElementById('comentarios-' + tarea.id);
+                                let usuario = obtenerUsuario(usuarioLogueado);
                                 const p = document.createElement('p');
+                                const span = document.createElement('span');
+                                span.innerHTML = usuario.nombreCompleto;
                                 p.innerHTML = comentario;
+                                p.appendChild(span);
                                 listaDeComentarios.appendChild(p);
                             }
                         })
@@ -131,7 +136,7 @@ function agregarTarea() {
                 grupoDeTrabajo.usuarios.forEach(usuario => {
                     if (usuario.id == usuarioLogueado) {
                         let tareas = usuario.tareas;
-                        let tareaId = tareas.length + 1;
+                        let tareaId = contarTareas() + 1;
                         tareas.push({
                             id: tareaId,
                             nombre: tarea,
@@ -152,9 +157,7 @@ function agregarTarea() {
     }
 }
 
-
 function eliminarTarea(id) {
-
     let grupoIdDeUsuarioLogueado = Number(localStorage.getItem('grupoIdDeUsuarioLogueado'));
     let flagTareaEliminada = false;
 
@@ -174,7 +177,7 @@ function eliminarTarea(id) {
                     usuario.tareas.splice(pos, 1);
                     componenteTarea = document.getElementById('tarea-' + id);
                     componenteTarea.style.display = 'none';
-                    
+
 
                 }
 
@@ -183,10 +186,34 @@ function eliminarTarea(id) {
 
         }
     });
+}
 
-    
+function contarComentarios() {
+    let contador = 0;
+    grupoDeTrabajos.forEach(grupoDeTrabajo => {
+        grupoDeTrabajo.usuarios.forEach(usuario => {
+            usuario.tareas.forEach(tareas => {
+                contador += tareas.comentarios.length;
+            })
+        })
+    });
 
+    if (contador > 0) {
+        return contador;
+    }
+}
 
+function contarTareas() {
+    let contador = 0;
+    grupoDeTrabajos.forEach(grupoDeTrabajo => {
+        grupoDeTrabajo.usuarios.forEach(usuario => {
+            contador += usuario.tareas.length;
+        })
+    });
+
+    if (contador > 0) {
+        return contador;
+    }
 }
 
 function iniciarSesion() {
@@ -217,9 +244,6 @@ function inicializarBuscador() {
 
 }
 
-
-
-
 function listarTareasYcomentarios() {
     const divTareas = document.getElementById('tareas');
     let content = document.getElementById("content");
@@ -239,8 +263,8 @@ function listarTareasYcomentarios() {
                 const encabezadoTarea = document.createElement('div');
                 encabezadoTarea.setAttribute('class', 'plegable');
                 const divNombreDeTarea = document.createElement('p');
-               
-               
+
+
                 divNombreDeTarea.innerHTML = tarea.nombre;
                 encabezadoTarea.appendChild(divNombreDeTarea);
 
@@ -252,7 +276,7 @@ function listarTareasYcomentarios() {
                 comentarios.setAttribute('class', 'comentarios');
                 comentarios.appendChild(listaDeComentarios);
                 componenteTarea.appendChild(comentarios);
-                
+
 
                 content.appendChild(componenteTarea);
                 divTareas.appendChild(content);
@@ -289,8 +313,12 @@ function listarTareasYcomentarios() {
                 }
 
                 tarea.comentarios.forEach(comentario => {
+                    let usuario = obtenerUsuario(comentario.id);
                     const p = document.createElement('p');
+                    const span = document.createElement('span');
+                    span.innerHTML = usuario.nombreCompleto;
                     p.innerHTML = comentario.nombre;
+                    p.appendChild(span);
                     listaDeComentarios.appendChild(p);
                 })
 
@@ -322,6 +350,27 @@ function obtenerTareas() {
     return tareas;
 }
 
+function obtenerUsuario(id) {
+    let encontrado = {
+        nombreCompleto: "",
+        flag: false
+    }
+    grupoDeTrabajos.find(grupoDeTrabajo => {
+        return grupoDeTrabajo.usuarios.forEach(usuario => {
+            if (usuario.id == id) {
+                encontrado.nombreCompleto = usuario.nombreCompleto;
+                encontrado.flag = true;
+            }
+        });
+    });
+
+    if (encontrado.flag) {
+        return encontrado;
+    }
+
+
+}
+
 function validarInput(texto, mensaje) {
     if (texto.length == 0) {
         alert(mensaje);
@@ -330,7 +379,6 @@ function validarInput(texto, mensaje) {
         return true;
     }
 }
-
 
 iniciarSesion();
 inicializarBuscador();

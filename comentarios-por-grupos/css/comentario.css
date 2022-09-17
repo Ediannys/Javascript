@@ -1,37 +1,55 @@
 .comentarios {
-    display: none;
-    overflow: hidden;
-    background-color: #f1f1f1;
-  }
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
 
 
 .section-agregar-comentario {
-    padding: 100px;
-    display: flex;
-    flex-direction: column;
-    color: white;
-    justify-content: initial;
-   
+  padding: 20px 82px;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  justify-content: initial;
+  margin: 12px;
+
 }
 
-.section-agregar-comentario input{
-    border: 2px solid #9d999d;
-    padding: 10px;
-    margin-bottom: 13px;
-  }
+.section-agregar-comentario input {
+  border: 2px solid #9d999d;
+  padding: 10px;
+  margin-bottom: 13px;
+}
 
-  .section-agregar-comentario button{
-    width: 90px;
-    padding: 8px;
-    background: palevioletred;
-    border-radius: 48px;
-    border: 2px solid black;
-    color: black;
-    font-weight: 800;
-    cursor: pointer;
-    margin-bottom: 30px;
-  }
+.section-agregar-comentario button {
+  width: 90px;
+  padding: 8px;
+  background: palevioletred;
+  border-radius: 48px;
+  border: 2px solid black;
+  color: black;
+  font-weight: 800;
+  cursor: pointer;
+}
 
-  .section-agregar-comentario button:hover{
-    background-color: #db4b4bc7;;
-  }
+.section-agregar-comentario button:hover {
+  background-color: #db4b4bc7;
+  ;
+}
+
+.comentarios p {
+  background: palevioletred;
+  padding: 19px 18px;
+  margin: 12px;
+  border-radius: 52px;
+  position: relative;
+}
+
+.comentarios p span {
+  position: absolute;
+  right: 14px;
+  bottom: 5px;
+  font-size: 10px;
+  font-style: italic;
+  color: midnightblue;
+}

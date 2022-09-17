@@ -1,0 +1,9 @@
+.buscador {
+    background: black;
+    padding: 17px;
+}
+
+.buscador input {
+    border: 2px solid #fc01ff;
+    padding: 10px;
+}
