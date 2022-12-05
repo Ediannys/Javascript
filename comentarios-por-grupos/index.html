@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css//main.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <article class="search-wrapper">
+        <label for="search">Buscar tareas</label>
+        <input type="search" id="search" data-search>
+    </article>
+    <article task-wrapper>
+        <template  plegable-tasks-template>
+            <article class="task-card show" task-card>
+                <section task-header>
+                    <p>Tarea</p>
+                    <a><img src="./images/remove-icon.png" alt="remove-task"></a>
+                </section>
+                <section class="comment-wrapper">
+                    <ul id="comment-list" comment-list>
+                    </ul>
+                    <form name="comment-form-id" method="post" comment-form>
+                        <input type="text" name="summary">
+                        <input type="submit" id="btn" value="Agregar comentario">
+                    </form>
+                </section>
+
+            </article>
+           
+        </template>
+    </article>
+    <article>
+        <form name="task-form-id">
+            <input type="text" name="task-comment-id">
+            <input type="checkbox" name="can-comment">
+            <input type="checkbox" name="can-remove">
+            <input type="submit" id="btn" value="Agregar Tarea">
+        </form>
+    </article>
+    <script src="./js/index.js"></script>
+</body>
+</html>
